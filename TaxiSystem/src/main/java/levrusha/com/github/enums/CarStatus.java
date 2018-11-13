@@ -13,11 +13,6 @@ public enum CarStatus {
 	FREE,
 	
 	/**
-	 * Не работает
-	 */
-	OUT,
-	
-	/**
 	 * Сломан
 	 */
 	BROKEN;

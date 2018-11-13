@@ -7,9 +7,14 @@ public class Car implements Comparable<Car> {
 	private static int counter = 0;
 	private int id;
 	private CarStatus status;
-	private String numberOfPlateLicense;
+	private String plateLicense;
+	private String model;
 	
 	public Car() {
+		
+		setCounter();
+		setId();
+		setStatus(CarStatus.FREE);
 		
 	}
 	
@@ -26,7 +31,7 @@ public class Car implements Comparable<Car> {
 
 	@Override
 	public String toString() {
-		return "Тахи [ID =" + id + ", counter =" + Car.counter + ", status=" + status + ", numberOfPlateLicense=" + numberOfPlateLicense + "]";
+		return "Тахи [ID =" + id + ", model =" + model + ", plateLicense=" + plateLicense+ ", status=" + status + "]";
 	}
 
 	public int getCounter() {
@@ -53,11 +58,19 @@ public class Car implements Comparable<Car> {
 		this.status = status;
 	}
 
-	public String getNumberOfPlateLicense() {
-		return numberOfPlateLicense;
+	public String getplateLicense() {
+		return plateLicense;
 	}
 
-	public void setNumberOfPlateLicense(String numberOfPlateLicense) {
-		this.numberOfPlateLicense = numberOfPlateLicense;
+	public void setplateLicense(String plateLicense) {
+		this.plateLicense = plateLicense;
+	}
+
+	public String getModel() {
+		return model;
+	}
+
+	public void setModel(String model) {
+		this.model = model;
 	}
 }
