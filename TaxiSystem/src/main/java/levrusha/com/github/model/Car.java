@@ -31,7 +31,7 @@ public class Car implements Comparable<Car> {
 
 	@Override
 	public String toString() {
-		return "Тахи [ID =" + id + ", model =" + model + ", plateLicense=" + plateLicense+ ", status=" + status + "]";
+		return "Тахи [ID = " + id + ", model = " + model + ", plateLicense = " + plateLicense+ ", status = " + status + "]";
 	}
 
 	public int getCounter() {

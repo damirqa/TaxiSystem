@@ -17,14 +17,9 @@ public class RequestCreationThread implements Runnable{
 			
 			Request request = new Request();
 			
-			request.setCounter();
-			request.setId();
-			request.setDate(new Date());
-			request.setStatus(RequestStatus.PENDING);
-			
 			RequestJournal.expectingRequest.add(request);
 			
-			//System.out.println(RequestJournal.expectingRequest.last());
+			System.out.println(request);
 			
 			int timeBetweenBids = new Random().nextInt(10000 - 5000) + 5000;
 			
