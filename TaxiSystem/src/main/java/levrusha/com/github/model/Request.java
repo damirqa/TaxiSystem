@@ -10,12 +10,19 @@ public class Request implements Comparable<Request>{
 	
 	private static int counter = 0;
 	private int id;
+	
 	private Date date;
 	private RequestStatus status;
-	private String from;
-	private String to;
+	
+	private String fromStreet;
+	private int fromHouse;
+	
+	private String toStreet;
+	private int toHouse;
+	
 	private double distance;
 	private int time;
+	private int price;
 	
 	public Request() {
 		
@@ -25,18 +32,22 @@ public class Request implements Comparable<Request>{
 		this.status = RequestStatus.PENDING;
 		this.date = new Date();
 		
-		this.from = generatePlaceFrom();
-		this.to = generatePlaceTo();
+		this.fromStreet = generateFromStreet();
+		this.fromHouse = new Random().nextInt(100 - 1) + 1;
+		
+		this.toStreet = generateToStreet();
+		this.toHouse = new Random().nextInt(100 - 1) + 1;
 		
 		this.distance = generateDistance();
 		this.time = (int)(this.distance / 40 * 100);
+		this.price = generatePrice();
 		
 	}
 	
 	
 	@Override
 	public String toString() {
-		return "Заявка [ID=" + id + ", from = " + from + ", to = " + to + ", distance = " + distance + ", time = " + time + "]";
+		return "Заявка [ID=" + id + ", from = " + fromStreet + " " + fromHouse + ", to = " + toStreet + " " + toHouse + ", distance = " + distance + ", time = " + time + ", price = " + price + "]";
 	}
 	
 	/**
@@ -57,6 +68,45 @@ public class Request implements Comparable<Request>{
 		return 0;
 	}
 	
+	private String generateFromStreet() {
+		return StreetsList.streets.get(new Random().nextInt(StreetsList.streets.size()));
+	}
+	
+	// Исправить, выбирает ту же улицу
+	private String generateToStreet() {
+		String toStreet = StreetsList.streets.get(new Random().nextInt(StreetsList.streets.size()));
+		System.out.println("from = " + this.fromStreet + ", to = " + toStreet + ", toStreet == fromStreet ? " +  toStreet.equals(this.fromStreet));
+		if (toStreet.equals(this.fromStreet)) {
+			generateToStreet();
+		}
+		else {
+			return toStreet;
+		}
+		return null;
+	}
+	
+	
+	private double generateDistance() {
+		int from = StreetsList.streets.indexOf(this.fromStreet);
+		int to = StreetsList.streets.indexOf(this.toStreet);
+		double distance = from - to;
+		return Math.abs(distance);
+	}
+	
+	private int generatePrice() {
+		
+		Date start = new Date();
+		Date end = new Date();
+		
+		start.setMinutes(50);
+		end.setMinutes(59);
+		
+		if (this.date.after(start) && this.date.before(end)) {
+			return (int) (this.distance * 6 * 1.5);
+		}
+		return (int) (this.distance * 6);
+	}
+	
 
 	public int getCounter() {
 		return counter;
@@ -72,87 +122,5 @@ public class Request implements Comparable<Request>{
 	
 	public int getId() {
 		return this.id;
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	public RequestStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(RequestStatus status) {
-		this.status = status;
-	}
-
-
-	public String getFrom() {
-		return from;
-	}
-
-
-	public void setFrom(String from) {
-		this.from = from;
-	}
-
-
-	public String getTo() {
-		return to;
-	}
-
-
-	public void setTo(String to) {
-		this.to = to;
-	}
-	
-	
-	
-	public double getDistance() {
-		return distance;
-	}
-
-
-	public void setDistance(double distance) {
-		this.distance = distance;
-	}
-
-
-	public double getTime() {
-		return time;
-	}
-
-
-	public void setTime(int time) {
-		this.time = time;
-	}
-
-
-	private String generatePlaceFrom() {
-		int house = new Random().nextInt(100 - 1) + 1;
-		return StreetsList.streets.get(new Random().nextInt(StreetsList.streets.size())) + " " + house;
-	}
-	
-	private String generatePlaceTo() {
-		int house = new Random().nextInt(100 - 1) + 1;
-		String to = StreetsList.streets.get(new Random().nextInt(StreetsList.streets.size()));
-		String[] fromandhouse = this.from.split(" ");
-		String from = fromandhouse[0];
-		System.out.println(from + " " + to);
-		if (from.equals(to)) {
-			generatePlaceTo();
-		}
-		return to + " " + house;
-	}
-	
-	private double generateDistance() {
-		int from = StreetsList.streets.indexOf(this.from.substring(0, this.from.length() -3 ));
-		int to = StreetsList.streets.indexOf(this.to.substring(0, this.to.length() - 3));
-		double distance = from - to;
-		return Math.abs(distance);
 	}
 }
