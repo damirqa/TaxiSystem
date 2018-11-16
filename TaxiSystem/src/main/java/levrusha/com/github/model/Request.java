@@ -35,7 +35,7 @@ public class Request implements Comparable<Request>{
 		this.fromStreet = generateFromStreet();
 		this.fromHouse = new Random().nextInt(100 - 1) + 1;
 		
-		this.toStreet = generateToStreet();
+		generateToStreet();
 		this.toHouse = new Random().nextInt(100 - 1) + 1;
 		
 		this.distance = generateDistance();
@@ -72,17 +72,15 @@ public class Request implements Comparable<Request>{
 		return StreetsList.streets.get(new Random().nextInt(StreetsList.streets.size()));
 	}
 	
-	// Исправить, выбирает ту же улицу
-	private String generateToStreet() {
+	private void generateToStreet() {
 		String toStreet = StreetsList.streets.get(new Random().nextInt(StreetsList.streets.size()));
 		System.out.println("from = " + this.fromStreet + ", to = " + toStreet + ", toStreet == fromStreet ? " +  toStreet.equals(this.fromStreet));
 		if (toStreet.equals(this.fromStreet)) {
 			generateToStreet();
 		}
 		else {
-			return toStreet;
+			this.toStreet = toStreet;
 		}
-		return null;
 	}
 	
 	

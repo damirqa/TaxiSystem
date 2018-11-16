@@ -1,10 +1,8 @@
 package levrusha.com.github.thread;
 
-import java.util.Date;
 import java.util.Random;
 import static java.lang.Thread.sleep;
 
-import levrusha.com.github.enums.RequestStatus;
 import levrusha.com.github.model.Request;
 import levrusha.com.github.storage.RequestJournal;
 
@@ -17,14 +15,14 @@ public class RequestCreationThread implements Runnable{
 			
 			Request request = new Request();
 			
-			RequestJournal.expectingRequest.add(request);
+			RequestJournal.REQUESTS.add(request);
 			
 			System.out.println(request);
 			
-			int timeBetweenBids = new Random().nextInt(10000 - 5000) + 5000;
+			int timeBetweenRequests = new Random().nextInt(10000 - 5000) + 5000;
 			
 			try {
-				sleep(timeBetweenBids);
+				sleep(timeBetweenRequests);
 			} catch (InterruptedException exception) {
 				exception.printStackTrace();
 			}

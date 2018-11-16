@@ -7,7 +7,7 @@ import levrusha.com.github.model.Request;
 
 public class RequestJournal {
 
-	public static SortedSet<Request> expectingRequest = new TreeSet<>();
-	public static SortedSet<Request> archiveRequest = new TreeSet<>();
+	public static SortedSet<Request> REQUESTS = new TreeSet<>();
+	public static SortedSet<Request> ARCHIVE = new TreeSet<>();
 	
 }
