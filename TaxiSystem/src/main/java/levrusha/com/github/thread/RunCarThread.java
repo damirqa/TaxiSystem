@@ -8,10 +8,13 @@ import levrusha.com.github.storage.RequestJournal;
 
 import static java.lang.Thread.sleep;
 
+import java.util.Random;
+
 public class RunCarThread implements Runnable{
 	
 	private Request request;
 	private Car car;
+	private boolean carCrashed;
 	
 	public RunCarThread(Request request, Car car) {
 		this.request = request;
@@ -37,12 +40,15 @@ public class RunCarThread implements Runnable{
 			e.printStackTrace();
 		}
 		
-		car.setStatus(CarStatus.FREE);
+		int condition = (int)(Math.random() * 10);
 		
-		CarPark.FREECARS.add(car);
-		CarPark.BUSYCARS.remove(car);		
+		if (condition % 10 == 0) {
+			carCrashed = true;
+		} else {
+			carCrashed = false;
+		}
 		
-		System.out.println("Машина " + car.getId() + " выполнила заявку №" + request.getId());
-		
+		Thread carTracker = new Thread(new CarConditionTrackerThread(request, car, carCrashed));
+		carTracker.start();
 	}
 }
