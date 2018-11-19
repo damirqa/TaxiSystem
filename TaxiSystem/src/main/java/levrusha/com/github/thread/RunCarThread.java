@@ -8,8 +8,6 @@ import levrusha.com.github.storage.RequestJournal;
 
 import static java.lang.Thread.sleep;
 
-import java.util.Random;
-
 public class RunCarThread implements Runnable{
 	
 	private Request request;

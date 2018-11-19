@@ -47,7 +47,7 @@ public class Request implements Comparable<Request>{
 	
 	@Override
 	public String toString() {
-		return "Заявка [ID=" + id + ", from = " + fromStreet + " " + fromHouse + ", to = " + toStreet + " " + toHouse + ", distance = " + distance + ", time = " + time + ", price = " + price + "]";
+		return "Заявка " + id + ". Откуда: " + fromStreet + " " + fromHouse + ". Куда: " + toStreet + " " + toHouse + ". Расстояние: " + distance + " км. Время: " + time + " мин. Стоимость: " + price + " руб.";
 	}
 	
 	/**
@@ -91,6 +91,7 @@ public class Request implements Comparable<Request>{
 		return Math.abs(distance);
 	}
 	
+	@SuppressWarnings("deprecation")
 	private int generatePrice() {
 		
 		Date start = new Date();
