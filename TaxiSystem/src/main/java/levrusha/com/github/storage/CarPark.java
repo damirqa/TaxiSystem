@@ -10,5 +10,6 @@ public class CarPark {
 
 	public static ArrayList<Car> BUSYCARS = new ArrayList<>();
 	public static SortedSet<Car> FREECARS = new TreeSet<>();
+	public static ArrayList<Car> CARS = new ArrayList<>();
 	
 }

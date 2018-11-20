@@ -6,17 +6,21 @@ import levrusha.com.github.model.Request;
 import levrusha.com.github.storage.CarPark;
 import levrusha.com.github.storage.RequestJournal;
 
-import static java.lang.Thread.sleep;
+import javax.swing.JTextArea;
 
 public class RunCarThread implements Runnable{
 	
 	private Request request;
 	private Car car;
 	private boolean carCrashed;
+	private JTextArea crashInfo;
+	private JTextArea logInfo;
 	
-	public RunCarThread(Request request, Car car) {
+	public RunCarThread(Request request, Car car, JTextArea crash, JTextArea log) {
 		this.request = request;
 		this.car = car;
+		this.crashInfo = crash;
+		this.logInfo = log;
 	}
 
 	@Override
@@ -30,13 +34,9 @@ public class RunCarThread implements Runnable{
 		RequestJournal.ARCHIVE.add(request);
 		RequestJournal.REQUESTS.remove(request);
 		
-		System.out.println("Машина " + car.getId() + " приняла заявку №" + request.getId());
+		this.logInfo.append(" Машина " + car.getId() + " приняла заявку №" + request.getId() + "\n");
 		
-		try {
-			sleep(50000);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		System.out.println("Машина " + car.getId() + " приняла заявку №" + request.getId());
 		
 		int condition = (int)(Math.random() * 10);
 		
@@ -46,7 +46,7 @@ public class RunCarThread implements Runnable{
 			carCrashed = false;
 		}
 		
-		Thread carTracker = new Thread(new CarConditionTrackerThread(request, car, carCrashed));
+		Thread carTracker = new Thread(new CarConditionTrackerThread(request, car, carCrashed, crashInfo));
 		carTracker.start();
 	}
 }

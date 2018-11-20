@@ -15,6 +15,7 @@ public class CarCreationThread implements Runnable {
 			car.setModel(models[i]);
 			car.setplateLicense(plates[i]);
 			CarPark.FREECARS.add(car);
+			CarPark.CARS.add(car);
 			System.out.println(car);
 		}
 	}

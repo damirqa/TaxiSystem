@@ -1,11 +1,5 @@
 package levrusha.com.github;
 
-import java.util.Timer;
-
-import levrusha.com.github.thread.CarCreationThread;
-import levrusha.com.github.thread.RequestCreationThread;
-import levrusha.com.github.utils.RequestTrackingTimerTask;
-
 public class Runner {
 
 	public static void main(String[] args) {
