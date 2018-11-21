@@ -17,6 +17,7 @@ import levrusha.com.github.storage.CarPark;
 import levrusha.com.github.thread.CarCreationThread;
 import levrusha.com.github.thread.RequestCreationThread;
 import levrusha.com.github.thread.TimeClockThread;
+import levrusha.com.github.thread.UpdateBudgetingThread;
 import levrusha.com.github.utils.RequestTrackingTimerTask;
 
 import javax.swing.JLabel;
@@ -39,6 +40,10 @@ public class Window extends JFrame {
 	private JLabel crashlabel;
 	private JLabel idCrashCarLabel;
 	private JLabel timeClockLabel;
+	private JLabel calculateLabel;
+	private JLabel incomeLabel;
+	private JLabel reparsLabel;
+	private JLabel profitLabel;
 	private JButton fixCarButton;
 	private JTextField idCrashCarTextField;
 		
@@ -46,6 +51,9 @@ public class Window extends JFrame {
 	private static JTextArea logArea;
 	private static JTextArea crashArea;
 	private static JTextField timeClockTextField;
+	private static JTextField repairsTextField;
+	private static JTextField incomeTextField;
+	private static JTextField profitTextField;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -64,7 +72,12 @@ public class Window extends JFrame {
 					Timer timer = new Timer();
 					timer.schedule(new RequestTrackingTimerTask(crashArea, logArea), 10000);
 					
-					frame.clock(date, timeClockTextField);
+					Thread timeClock = new Thread(new TimeClockThread(date, timeClockTextField));
+					timeClock.start();
+					
+					Thread updateBudgeting = new Thread(new UpdateBudgetingThread(incomeTextField, repairsTextField, profitTextField));
+					updateBudgeting.start();
+					
 				
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -125,24 +138,66 @@ public class Window extends JFrame {
 		fixCarButton.setBounds(10, 487, 229, 23);
 		contentPanel.add(fixCarButton);
 		
-		timeClockLabel = new JLabel("Текущее время");
+		timeClockLabel = new JLabel("Текущее время:");
 		timeClockLabel.setFont(new Font("Microsoft YaHei UI Light", Font.PLAIN, 18));
-		timeClockLabel.setBounds(260, 461, 132, 19);
+		timeClockLabel.setBounds(414, 463, 132, 19);
 		contentPanel.add(timeClockLabel);
 		
 		timeClockTextField = new JTextField();
 		timeClockTextField.setBackground(Color.WHITE);
 		timeClockTextField.setEditable(false);
 		timeClockTextField.setHorizontalAlignment(SwingConstants.RIGHT);
-		timeClockTextField.setBounds(260, 488, 128, 20);
+		timeClockTextField.setBounds(556, 463, 128, 20);
 		contentPanel.add(timeClockTextField);
 		timeClockTextField.setColumns(10);
+		
+		calculateLabel = new JLabel("Расчеты");
+		calculateLabel.setFont(new Font("Microsoft YaHei UI Light", Font.PLAIN, 18));
+		calculateLabel.setBounds(414, 221, 200, 19);
+		contentPanel.add(calculateLabel);
+		
+		incomeLabel = new JLabel("Доходы:");
+		incomeLabel.setFont(new Font("Microsoft YaHei UI Light", Font.PLAIN, 18));
+		incomeLabel.setBounds(413, 261, 84, 19);
+		contentPanel.add(incomeLabel);
+		
+		reparsLabel = new JLabel("Ремонт машин:");
+		reparsLabel.setFont(new Font("Microsoft YaHei UI Light", Font.PLAIN, 18));
+		reparsLabel.setBounds(414, 291, 132, 19);
+		contentPanel.add(reparsLabel);
+		
+		profitLabel = new JLabel("Прибыль:");
+		profitLabel.setFont(new Font("Microsoft YaHei UI Light", Font.PLAIN, 18));
+		profitLabel.setBounds(414, 321, 84, 19);
+		contentPanel.add(profitLabel);
+		
+		repairsTextField = new JTextField();
+		repairsTextField.setBackground(Color.WHITE);
+		repairsTextField.setEditable(false);
+		repairsTextField.setBounds(556, 293, 86, 20);
+		contentPanel.add(repairsTextField);
+		repairsTextField.setColumns(10);
+		
+		incomeTextField = new JTextField();
+		incomeTextField.setEditable(false);
+		incomeTextField.setColumns(10);
+		incomeTextField.setBackground(Color.WHITE);
+		incomeTextField.setBounds(556, 263, 86, 20);
+		contentPanel.add(incomeTextField);
+		
+		profitTextField = new JTextField();
+		profitTextField.setEditable(false);
+		profitTextField.setColumns(10);
+		profitTextField.setBackground(Color.WHITE);
+		profitTextField.setBounds(556, 323, 86, 20);
+		contentPanel.add(profitTextField);
 		
 		fixCarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int idcar = Integer.parseInt(idCrashCarTextField.getText());
 				CarPark.BUSYCARS.get(idcar).setStatus(CarStatus.BUSY);
 				idCrashCarTextField.setText("");
+				crashArea.setCaretPosition(crashArea.getText().length());
 			}
 		});
 	}
@@ -153,10 +208,5 @@ public class Window extends JFrame {
 		int y = (screenSize.height - this.height) / 2;
 		setBounds(x, y, width, height);
 		
-	}
-	
-	private void clock(Date date, JTextField timeClockField) {
-		Thread timeClock = new Thread(new TimeClockThread(date, timeClockField));
-		timeClock.start();
 	}
 }
