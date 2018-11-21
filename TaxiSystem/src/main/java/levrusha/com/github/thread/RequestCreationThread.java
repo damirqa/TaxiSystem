@@ -11,10 +11,10 @@ import levrusha.com.github.storage.RequestJournal;
 
 public class RequestCreationThread implements Runnable {
 	
-	private JTextArea log;
+	private JTextArea logInfo;
 	
 	public RequestCreationThread(JTextArea log) {
-		this.log = log;
+		this.logInfo = log;
 	}
 
 	@Override
@@ -26,7 +26,8 @@ public class RequestCreationThread implements Runnable {
 			
 			RequestJournal.REQUESTS.add(request);
 			
-			log.append(" " + request.toString() + "\n");
+			logInfo.append(" " + request.toString() + "\n");
+			logInfo.setCaretPosition(logInfo.getText().length());
 			
 			int timeBetweenRequests = new Random().nextInt(10000 - 5000) + 5000;
 			

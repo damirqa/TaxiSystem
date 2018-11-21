@@ -28,15 +28,16 @@ public class RunCarThread implements Runnable{
 				
 		car.setStatus(CarStatus.BUSY);
 		
-		CarPark.BUSYCARS.add(car);
+		CarPark.BUSYCARS.put(car.getId(), car);
 		CarPark.FREECARS.remove(car);
 		
 		RequestJournal.ARCHIVE.add(request);
 		RequestJournal.REQUESTS.remove(request);
-		
+
 		this.logInfo.append(" Машина " + car.getId() + " приняла заявку №" + request.getId() + "\n");
+		this.logInfo.setCaretPosition(this.logInfo.getText().length());
 		
-		System.out.println("Машина " + car.getId() + " приняла заявку №" + request.getId());
+		//System.out.println("Машина " + car.getId() + " приняла заявку №" + request.getId());
 		
 		int condition = (int)(Math.random() * 10);
 		
@@ -46,7 +47,7 @@ public class RunCarThread implements Runnable{
 			carCrashed = false;
 		}
 		
-		Thread carTracker = new Thread(new CarConditionTrackerThread(request, car, carCrashed, crashInfo));
+		Thread carTracker = new Thread(new CarConditionTrackerThread(request, car, carCrashed, crashInfo, logInfo));
 		carTracker.start();
 	}
 }

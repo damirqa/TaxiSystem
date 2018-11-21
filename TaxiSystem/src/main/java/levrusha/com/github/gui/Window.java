@@ -1,6 +1,5 @@
 package levrusha.com.github.gui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
@@ -12,24 +11,33 @@ import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
+import levrusha.com.github.enums.CarStatus;
+import levrusha.com.github.storage.CarPark;
 import levrusha.com.github.thread.CarCreationThread;
 import levrusha.com.github.thread.RequestCreationThread;
 import levrusha.com.github.utils.RequestTrackingTimerTask;
 
 import javax.swing.JLabel;
 import java.awt.Font;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
 public class Window extends JFrame {
 	
 	private int width = 800;
-	private int height = 500;
+	private int height = 560;
 
 	private JPanel contentPanel;
 	private static JTextArea logArea;
 	private static JTextArea crashArea;
 	private JLabel requestLabel;
 	private JLabel crashlabel;
+	private JLabel idCrashCarLabel;
+	private JTextField idCrashCarTextField;
+	private JButton fixCarButton;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -69,7 +77,6 @@ public class Window extends JFrame {
 		
 		logArea = new JTextArea();
 		logArea.setLineWrap(true);
-		logArea.setCaretPosition(logArea.getText().length());
 		logArea.setEditable(false);
 		
 		JScrollPane scrollLogArea = new JScrollPane(logArea);
@@ -87,18 +94,42 @@ public class Window extends JFrame {
 		contentPanel.add(crashlabel);
 		
 		crashArea = new JTextArea();
-		crashArea.setBounds(10, 246, 382, 204);
+		crashArea.setLineWrap(true);
 		crashArea.setEditable(false);
-		contentPanel.add(crashArea);
-	
-
+		
+		JScrollPane scrollCrashArea = new JScrollPane(crashArea);
+		scrollCrashArea.setBounds(10, 246, 382, 204);
+		contentPanel.add(scrollCrashArea);
+		
+		idCrashCarLabel = new JLabel("ID сломанной машины:");
+		idCrashCarLabel.setFont(new Font("Microsoft YaHei UI Light", Font.PLAIN, 18));
+		idCrashCarLabel.setBounds(10, 461, 200, 19);
+		contentPanel.add(idCrashCarLabel);
+		
+		idCrashCarTextField = new JTextField();
+		idCrashCarTextField.setFont(new Font("Microsoft YaHei UI Light", Font.PLAIN, 18));
+		idCrashCarTextField.setBounds(214, 460, 25, 23);
+		contentPanel.add(idCrashCarTextField);
+		idCrashCarTextField.setColumns(10);
+		
+		fixCarButton = new JButton("Починить машину");
+		fixCarButton.setBounds(10, 487, 229, 23);
+		contentPanel.add(fixCarButton);
+		
+		fixCarButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int idcar = Integer.parseInt(idCrashCarTextField.getText());
+				CarPark.BUSYCARS.get(idcar).setStatus(CarStatus.BUSY);
+				idCrashCarTextField.setText("");
+			}
+		});
 	}
 	
 	private void setWindowToCenter() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = (screenSize.width - this.width) / 2;
 		int y = (screenSize.height - this.height) / 2;
-		setBounds(x, y, this.width, this.height);
+		setBounds(x, y, width, height);
 		
 	}
 }
