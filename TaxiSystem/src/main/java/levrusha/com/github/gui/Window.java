@@ -3,6 +3,7 @@ package levrusha.com.github.gui;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
+import java.util.Date;
 import java.util.Timer;
 
 import javax.swing.JFrame;
@@ -15,6 +16,7 @@ import levrusha.com.github.enums.CarStatus;
 import levrusha.com.github.storage.CarPark;
 import levrusha.com.github.thread.CarCreationThread;
 import levrusha.com.github.thread.RequestCreationThread;
+import levrusha.com.github.thread.TimeClockThread;
 import levrusha.com.github.utils.RequestTrackingTimerTask;
 
 import javax.swing.JLabel;
@@ -23,22 +25,28 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
+import java.awt.Color;
 
 @SuppressWarnings("serial")
 public class Window extends JFrame {
 	
 	private int width = 800;
 	private int height = 560;
-
+	
 	private JPanel contentPanel;
-	private static JTextArea logArea;
-	private static JTextArea crashArea;
 	private JLabel requestLabel;
 	private JLabel crashlabel;
 	private JLabel idCrashCarLabel;
-	private JTextField idCrashCarTextField;
+	private JLabel timeClockLabel;
 	private JButton fixCarButton;
-
+	private JTextField idCrashCarTextField;
+		
+	private static Date date;
+	private static JTextArea logArea;
+	private static JTextArea crashArea;
+	private static JTextField timeClockTextField;
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -56,6 +64,7 @@ public class Window extends JFrame {
 					Timer timer = new Timer();
 					timer.schedule(new RequestTrackingTimerTask(crashArea, logArea), 10000);
 					
+					frame.clock(date, timeClockTextField);
 				
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -116,6 +125,19 @@ public class Window extends JFrame {
 		fixCarButton.setBounds(10, 487, 229, 23);
 		contentPanel.add(fixCarButton);
 		
+		timeClockLabel = new JLabel("Текущее время");
+		timeClockLabel.setFont(new Font("Microsoft YaHei UI Light", Font.PLAIN, 18));
+		timeClockLabel.setBounds(260, 461, 132, 19);
+		contentPanel.add(timeClockLabel);
+		
+		timeClockTextField = new JTextField();
+		timeClockTextField.setBackground(Color.WHITE);
+		timeClockTextField.setEditable(false);
+		timeClockTextField.setHorizontalAlignment(SwingConstants.RIGHT);
+		timeClockTextField.setBounds(260, 488, 128, 20);
+		contentPanel.add(timeClockTextField);
+		timeClockTextField.setColumns(10);
+		
 		fixCarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int idcar = Integer.parseInt(idCrashCarTextField.getText());
@@ -131,5 +153,10 @@ public class Window extends JFrame {
 		int y = (screenSize.height - this.height) / 2;
 		setBounds(x, y, width, height);
 		
+	}
+	
+	private void clock(Date date, JTextField timeClockField) {
+		Thread timeClock = new Thread(new TimeClockThread(date, timeClockField));
+		timeClock.start();
 	}
 }
