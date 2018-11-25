@@ -91,6 +91,7 @@ public class Request implements Comparable<Request>{
 		return Math.abs(distance);
 	}
 	
+	@SuppressWarnings("deprecation")
 	private int generatePrice() {
 		
 		Date start = new Date();
