@@ -23,6 +23,7 @@ import levrusha.com.github.utils.RequestTrackingTimerTask;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -44,6 +45,7 @@ public class Window extends JFrame {
 	private JLabel incomeLabel;
 	private JLabel reparsLabel;
 	private JLabel profitLabel;
+	private JLabel taxiLabel;
 	private JButton fixCarButton;
 	private JTextField idCrashCarTextField;
 		
@@ -140,14 +142,14 @@ public class Window extends JFrame {
 		
 		timeClockLabel = new JLabel("Текущее время:");
 		timeClockLabel.setFont(new Font("Microsoft YaHei UI Light", Font.PLAIN, 18));
-		timeClockLabel.setBounds(414, 463, 132, 19);
+		timeClockLabel.setBounds(414, 353, 132, 19);
 		contentPanel.add(timeClockLabel);
 		
 		timeClockTextField = new JTextField();
 		timeClockTextField.setBackground(Color.WHITE);
 		timeClockTextField.setEditable(false);
 		timeClockTextField.setHorizontalAlignment(SwingConstants.RIGHT);
-		timeClockTextField.setBounds(556, 463, 128, 20);
+		timeClockTextField.setBounds(556, 353, 86, 20);
 		contentPanel.add(timeClockTextField);
 		timeClockTextField.setColumns(10);
 		
@@ -191,6 +193,10 @@ public class Window extends JFrame {
 		profitTextField.setBackground(Color.WHITE);
 		profitTextField.setBounds(556, 323, 86, 20);
 		contentPanel.add(profitTextField);
+		
+		taxiLabel = new JLabel(new ImageIcon(getClass().getResource("/img/Taxi.jpg")));
+		taxiLabel.setBounds(415, 400, 353, 40);
+		contentPanel.add(taxiLabel);
 		
 		fixCarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

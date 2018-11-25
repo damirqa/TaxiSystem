@@ -6,6 +6,8 @@ import javax.swing.JTextField;
 
 import static java.lang.Thread.sleep;
 
+import java.text.SimpleDateFormat;
+
 public class TimeClockThread implements Runnable {
 	
 	private Date date;
@@ -22,7 +24,8 @@ public class TimeClockThread implements Runnable {
 		
 		while (true) {
 			this.date = new Date();
-			this.timeClockField.setText(this.date.toLocaleString());
+			SimpleDateFormat dt1 = new SimpleDateFormat("dd.MM HH:mm:ss");
+			this.timeClockField.setText(dt1.format(date));
 			try {
 				sleep(1000);
 			} catch (InterruptedException e) {
