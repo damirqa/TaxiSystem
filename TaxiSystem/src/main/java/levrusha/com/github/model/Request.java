@@ -47,7 +47,7 @@ public class Request implements Comparable<Request>{
 	
 	@Override
 	public String toString() {
-		return "Заявка [ID=" + id + ", from = " + fromStreet + " " + fromHouse + ", to = " + toStreet + " " + toHouse + ", distance = " + distance + ", time = " + time + ", price = " + price + "]";
+		return "Заявка " + id + ". Откуда: " + fromStreet + " " + fromHouse + ". Куда: " + toStreet + " " + toHouse + ". Расстояние: " + distance + " км. Время: " + time + " мин. Стоимость: " + price + " руб.";
 	}
 	
 	/**
@@ -97,13 +97,20 @@ public class Request implements Comparable<Request>{
 		Date start = new Date();
 		Date end = new Date();
 		
+		int price = 0;
+		
 		start.setMinutes(50);
 		end.setMinutes(59);
 		
 		if (this.date.after(start) && this.date.before(end)) {
-			return (int) (this.distance * 6 * 1.5);
+			price = (int) ((this.distance * 6 + this.time * 4) * 1.5);
 		}
-		return (int) (this.distance * 6);
+		else {
+			price = (int) (this.distance * 6 + this.time * 4);
+		}
+		
+		return (price > 85) ? price : 85; 
+	
 	}
 	
 
@@ -121,5 +128,13 @@ public class Request implements Comparable<Request>{
 	
 	public int getId() {
 		return this.id;
+	}
+	
+	public int getPrice() {
+		return this.price;
+	}
+	
+	public double getDistance() {
+		return this.distance;
 	}
 }

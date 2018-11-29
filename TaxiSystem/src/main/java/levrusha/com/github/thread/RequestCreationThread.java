@@ -1,12 +1,21 @@
 package levrusha.com.github.thread;
 
 import java.util.Random;
+
+import javax.swing.JTextArea;
+
 import static java.lang.Thread.sleep;
 
 import levrusha.com.github.model.Request;
 import levrusha.com.github.storage.RequestJournal;
 
-public class RequestCreationThread implements Runnable{
+public class RequestCreationThread implements Runnable {
+	
+	private JTextArea logInfo;
+	
+	public RequestCreationThread(JTextArea log) {
+		this.logInfo = log;
+	}
 
 	@Override
 	public void run() {
@@ -17,9 +26,10 @@ public class RequestCreationThread implements Runnable{
 			
 			RequestJournal.REQUESTS.add(request);
 			
-			System.out.println(request);
+			logInfo.append(" " + request.toString() + "\n");
+			logInfo.setCaretPosition(logInfo.getText().length());
 			
-			int timeBetweenRequests = new Random().nextInt(10000 - 5000) + 5000;
+			int timeBetweenRequests = new Random().nextInt(8000 - 3000) + 3000;
 			
 			try {
 				sleep(timeBetweenRequests);
