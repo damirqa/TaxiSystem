@@ -29,7 +29,7 @@ public class RequestCreationThread implements Runnable {
 			logInfo.append(" " + request.toString() + "\n");
 			logInfo.setCaretPosition(logInfo.getText().length());
 			
-			int timeBetweenRequests = new Random().nextInt(10000 - 5000) + 5000;
+			int timeBetweenRequests = new Random().nextInt(8000 - 3000) + 3000;
 			
 			try {
 				sleep(timeBetweenRequests);

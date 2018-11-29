@@ -133,4 +133,8 @@ public class Request implements Comparable<Request>{
 	public int getPrice() {
 		return this.price;
 	}
+	
+	public double getDistance() {
+		return this.distance;
+	}
 }

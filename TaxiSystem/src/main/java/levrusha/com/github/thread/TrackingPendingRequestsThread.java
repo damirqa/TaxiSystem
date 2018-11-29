@@ -7,6 +7,9 @@ import levrusha.com.github.storage.RequestJournal;
 
 import static java.lang.Thread.sleep;
 
+import java.util.ArrayList;
+
+import javax.swing.JLabel;
 import javax.swing.JTextArea;
 
 public class TrackingPendingRequestsThread implements Runnable{
@@ -17,9 +20,12 @@ public class TrackingPendingRequestsThread implements Runnable{
 	private JTextArea crashInfo;
 	private JTextArea logInfo;
 	
-	public TrackingPendingRequestsThread(JTextArea crash, JTextArea log) {
+	private ArrayList<JLabel> condition;
+	
+	public TrackingPendingRequestsThread(JTextArea crash, JTextArea log, ArrayList<JLabel> condition) {
 		this.crashInfo = crash;
 		this.logInfo = log;
+		this.condition = condition;
 	}
 	
 	@Override
@@ -30,10 +36,10 @@ public class TrackingPendingRequestsThread implements Runnable{
 			setRequest();
 			setFreeCar();
 
-			new Thread(new RunCarThread(request, car, crashInfo, logInfo)).start();
+			new Thread(new RunCarThread(request, car, crashInfo, logInfo, condition)).start();
 			
 			try {
-				sleep(5000);
+				sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

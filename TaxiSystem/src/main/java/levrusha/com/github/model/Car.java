@@ -9,6 +9,7 @@ public class Car implements Comparable<Car> {
 	private CarStatus status;
 	private String plateLicense;
 	private String model;
+	private int gasolineVolume = 20;
 	
 	public Car() {
 		
@@ -72,5 +73,13 @@ public class Car implements Comparable<Car> {
 
 	public void setModel(String model) {
 		this.model = model;
+	}
+	
+	public void setGasolineVolume(int volume) {
+		this.gasolineVolume = volume;
+	}
+	
+	public int getGasolineVolume() {
+		return this.gasolineVolume;
 	}
 }

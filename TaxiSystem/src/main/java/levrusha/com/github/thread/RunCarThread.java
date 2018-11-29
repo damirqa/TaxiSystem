@@ -6,6 +6,11 @@ import levrusha.com.github.model.Request;
 import levrusha.com.github.storage.CarPark;
 import levrusha.com.github.storage.RequestJournal;
 
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.concurrent.locks.Condition;
+
+import javax.swing.JLabel;
 import javax.swing.JTextArea;
 
 public class RunCarThread implements Runnable{
@@ -15,12 +20,14 @@ public class RunCarThread implements Runnable{
 	private boolean carCrashed;
 	private JTextArea crashInfo;
 	private JTextArea logInfo;
+	private ArrayList<JLabel> condition;
 	
-	public RunCarThread(Request request, Car car, JTextArea crash, JTextArea log) {
+	public RunCarThread(Request request, Car car, JTextArea crash, JTextArea log, ArrayList<JLabel> condition) {
 		this.request = request;
 		this.car = car;
 		this.crashInfo = crash;
 		this.logInfo = log;
+		this.condition = condition;
 	}
 
 	@Override
@@ -37,6 +44,9 @@ public class RunCarThread implements Runnable{
 		this.logInfo.append(" Машина " + car.getId() + " приняла заявку №" + request.getId() + "\n");
 		this.logInfo.setCaretPosition(this.logInfo.getText().length());
 		
+		condition.get(car.getId() - 1).setText(" Заявка" + request.getId());
+		condition.get(car.getId() - 1).setBackground(Color.GREEN);
+		
 		//System.out.println("Машина " + car.getId() + " приняла заявку №" + request.getId());
 		
 		int condition = (int)(Math.random() * 10);
@@ -47,7 +57,7 @@ public class RunCarThread implements Runnable{
 			carCrashed = false;
 		}
 		
-		Thread carTracker = new Thread(new CarConditionTrackerThread(request, car, carCrashed, crashInfo, logInfo));
+		Thread carTracker = new Thread(new CarConditionTrackerThread(request, car, carCrashed, crashInfo, logInfo, this.condition));
 		carTracker.start();
 	}
 }
